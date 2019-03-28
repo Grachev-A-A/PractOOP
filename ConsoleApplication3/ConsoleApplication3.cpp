@@ -70,6 +70,7 @@ int main()
 		out_array(a, n);
 		// Удаление
 		dell_array(a, n, p);
+		out_array(a, n);
 	}
 	else {
 		cout << "Позиция вне индексов массива!\n";
