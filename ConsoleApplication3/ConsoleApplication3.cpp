@@ -21,6 +21,9 @@ void dell_palindrom1(int*x, int &n);
 void sort_boobl(int*x, int n);
 int sort_boobl_good(int*x, int n);
 void sort_insert(int*x, int n);
+void create_pal_array(int*x, int n, int* &y, int &ny);
+void dell_arrayD(int*&x, int&n, int p);
+void insert_arrayD(int*x, int&n, int p, int b);
 
 using namespace std;
 
@@ -35,7 +38,7 @@ int main()
 		cout << "Size must be > 0 and < len!\n";
 		return 1;
 	}
-	inp_array(a, n);
+	//inp_array(a, n);
 	/*out_array(a, n);
 	out_array_right(a, n);*/
 
@@ -91,8 +94,46 @@ int main()
 	////inp_array(a, n);
 	//cout << "Кол-во проходов = " << sort_boobl_good(a, n) << endl;
 
-	sort_insert(a, n);
-	out_array(a, n);
+	//sort_insert(a, n);
+	//out_array(a, n);
+
+	int *c = new int[n];
+	if (c == NULL) {
+		cout << "Out Of Memory!\n";
+		return 1;
+	}
+	inp_array(c, n);
+	out_array(c, n);
+
+	int nc, *ca;
+	create_pal_array(c, n, ca, nc);
+	if (nc)
+		out_array(ca, nc);
+	else
+		cout << "Нет палиндромов!\n";
+	dell_arrayD(c, n, 2);
+	out_array(c, n);
+	cout << "Значение для вставки:\n";
+	int b;
+	cin >> b;
+	insert_array(c, n, 2, b);
+	out_array(c, n);
+	delete[]c;
+	delete[]ca;
+}
+
+
+
+void create_pal_array(int*x, int n, int* &y, int &ny) {
+	ny = 0;
+	y = new int[0];
+
+	for (int i = 0; i < n; i++) {
+		if (palindrom(x[i])) {
+			y = (int*)realloc(y, ++ny * sizeof(int));
+			y[ny - 1] = x[i];
+		}
+	}
 }
 
 void sort_insert(int*x, int n) {
@@ -159,9 +200,21 @@ void dell_array(int*x, int&n, int p) {
 	for (int i = p; i < n-1 ; i++)
 		x[i] = x[i + 1];
 	n--;
+}void dell_arrayD(int*&x, int&n, int p) {
+	for (int i = p; i < n-1 ; i++)
+		x[i] = x[i + 1];
+	n--;
+	x = (int*)realloc(x, n * sizeof(int));
 }
 
 void insert_array(int*x, int&n, int p, int b) {
+	for (int i = n; i >= p + 1; i--)
+		x[i] = x[i - 1];
+	x[p] = b;
+	n++;
+}
+void insert_arrayD(int*x, int&n, int p, int b) {
+	x = (int*)realloc(x, (n + 1) * sizeof(int));
 	for (int i = n; i >= p + 1; i--)
 		x[i] = x[i - 1];
 	x[p] = b;
